@@ -35,20 +35,11 @@ class WorldMap {
     }
 
     initLeafletMap() {
-        // Check if user is on mobile device
-        const isMobile = window.innerWidth <= 768;
-
-        // Different settings for mobile vs desktop
-        // Mobile needs to be more zoomed out to show all centers
-        const fixedCenter = isMobile ? [40, -20] : [42, -30];
-        const fixedZoom = isMobile ? 1.5 : 2.5;
+        // Calculate bounds from all center coordinates to ensure all are visible
+        const bounds = this.calculateCenterBounds();
 
         // Create map with ALL interactions disabled for stable Santa animation
         this.map = L.map('leaflet-map', {
-            center: fixedCenter,
-            zoom: fixedZoom,
-            minZoom: fixedZoom,  // Lock zoom level
-            maxZoom: fixedZoom,  // Lock zoom level
             zoomControl: false,        // Hide zoom controls
             dragging: false,           // Disable dragging
             touchZoom: false,          // Disable touch zoom
@@ -66,9 +57,28 @@ class WorldMap {
             maxZoom: 19
         }).addTo(this.map);
 
-        // Store the fixed zoom for reference
-        this.fixedZoom = fixedZoom;
-        this.isMobile = isMobile;
+        // Fit map to show all centers with padding, then lock the view
+        this.map.fitBounds(bounds, {
+            padding: [30, 30],  // Add padding around the bounds
+            animate: false
+        });
+
+        // After fitting bounds, lock the zoom level
+        const currentZoom = this.map.getZoom();
+        this.map.setMinZoom(currentZoom);
+        this.map.setMaxZoom(currentZoom);
+        this.fixedZoom = currentZoom;
+    }
+
+    // Calculate the geographic bounds that contain all centers
+    calculateCenterBounds() {
+        const lats = this.centers.map(c => c.coordinates.lat);
+        const lngs = this.centers.map(c => c.coordinates.lng);
+
+        const southWest = L.latLng(Math.min(...lats), Math.min(...lngs));
+        const northEast = L.latLng(Math.max(...lats), Math.max(...lngs));
+
+        return L.latLngBounds(southWest, northEast);
     }
 
     addCenterMarkers() {
@@ -455,10 +465,28 @@ class WorldMap {
         });
     }
 
-    // Handle map resize (still useful for window resize)
+    // Handle map resize - re-fit bounds to ensure all centers visible
     invalidateSize() {
         if (this.map) {
             this.map.invalidateSize();
+
+            // Re-calculate and fit bounds on resize
+            const bounds = this.calculateCenterBounds();
+
+            // Temporarily unlock zoom to allow fitBounds
+            this.map.setMinZoom(1);
+            this.map.setMaxZoom(19);
+
+            this.map.fitBounds(bounds, {
+                padding: [30, 30],
+                animate: false
+            });
+
+            // Re-lock at new zoom level
+            const currentZoom = this.map.getZoom();
+            this.map.setMinZoom(currentZoom);
+            this.map.setMaxZoom(currentZoom);
+            this.fixedZoom = currentZoom;
         }
     }
 }
@@ -472,9 +500,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 100);
 });
 
-// Handle window resize
+// Handle window resize with debounce
+let resizeTimeout;
 window.addEventListener('resize', () => {
-    if (window.WorldMapInstance) {
-        window.WorldMapInstance.invalidateSize();
-    }
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+        if (window.WorldMapInstance) {
+            window.WorldMapInstance.invalidateSize();
+        }
+    }, 250);
 });
