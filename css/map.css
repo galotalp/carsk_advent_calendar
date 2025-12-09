@@ -108,9 +108,9 @@
 }
 
 .santa-image {
-    width: 150px;
+    width: 75px;
     height: auto;
-    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.5));
 }
 
 /* Gift drop animation */
@@ -265,10 +265,10 @@
     }
 
     .santa-image {
-        width: 100px;
+        width: 50px;
     }
 
     .dropping-gift {
-        font-size: 20px;
+        font-size: 18px;
     }
 }
