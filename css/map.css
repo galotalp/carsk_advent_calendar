@@ -92,16 +92,14 @@
     overflow: hidden;
 }
 
-/* Santa Character */
+/* Santa Character - using chadban_2.png image */
 .santa {
     position: absolute;
-    width: 180px;
-    height: 100px;
     z-index: 1001;
     pointer-events: none;
     /* Start position - visible on the left side */
     left: 20px;
-    top: 50px;
+    top: 30px;
     transition: none;
 }
 
@@ -109,165 +107,10 @@
     display: none;
 }
 
-.santa-sleigh {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transform-origin: center center;
-}
-
-/* Reindeer - to the left of sleigh */
-.reindeer {
-    position: absolute;
-    left: -10px;
-    top: 35px;
-    font-size: 35px;
-    z-index: 1;
-}
-
-.reindeer::before {
-    content: '🦌';
-}
-
-/* Sleigh base */
-.sleigh {
-    position: absolute;
-    bottom: 10px;
-    left: 40px;
-    width: 100px;
-    height: 30px;
-    background: linear-gradient(180deg, #8B0000 0%, #5c0000 100%);
-    border-radius: 5px 5px 25px 25px;
-    z-index: 2;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
-}
-
-.sleigh::before {
-    content: '';
-    position: absolute;
-    top: -8px;
-    left: 10px;
-    right: 10px;
-    height: 12px;
-    background: linear-gradient(180deg, #FFD700 0%, #B8860B 100%);
-    border-radius: 5px 5px 0 0;
-}
-
-.sleigh::after {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: 5px;
-    right: 5px;
-    height: 10px;
-    background: #4a3000;
-    border-radius: 0 0 15px 15px;
-}
-
-/* Santa body - in the sleigh */
-.santa-body {
-    position: absolute;
-    bottom: 35px;
-    left: 60px;
-    width: 55px;
-    height: 45px;
-    background: linear-gradient(180deg, var(--christmas-red) 0%, #8B0000 100%);
-    border-radius: 10px 10px 5px 5px;
-    z-index: 3;
-}
-
-/* White trim on body */
-.santa-body::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 8px;
-    background: white;
-    border-radius: 0 0 5px 5px;
-}
-
-/* Belt */
-.santa-body::after {
-    content: '';
-    position: absolute;
-    bottom: 10px;
-    left: 0;
-    right: 0;
-    height: 6px;
-    background: #2c2c2c;
-}
-
-/* Santa's face (Dr. Chadban's photo) */
-.santa-face {
-    position: absolute;
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    object-fit: cover;
-    bottom: 70px;
-    left: 65px;
-    border: 3px solid white;
-    background: #ffdbac;
-    z-index: 5;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-}
-
-.santa-face-placeholder {
-    position: absolute;
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    bottom: 70px;
-    left: 65px;
-    border: 3px solid white;
-    background: #ffdbac;
-    z-index: 5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 30px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-}
-
-/* Santa hat - positioned above Dr. Chadban's face */
-.santa-hat {
-    position: absolute;
-    bottom: 115px;  /* Raised higher to not cover face */
-    left: 58px;
-    width: 0;
-    height: 0;
-    border-left: 12px solid transparent;
-    border-right: 22px solid transparent;
-    border-bottom: 30px solid var(--christmas-red);
-    z-index: 6;
-    transform: rotate(15deg);  /* Slight tilt for a jaunty look */
-}
-
-.santa-hat::before {
-    /* White fur trim at base of hat */
-    content: '';
-    position: absolute;
-    top: 26px;
-    left: -15px;
-    width: 48px;
-    height: 8px;
-    background: white;
-    border-radius: 4px;
-    transform: rotate(-15deg);
-}
-
-.santa-hat::after {
-    /* White pom-pom at tip */
-    content: '';
-    position: absolute;
-    top: -8px;
-    left: 8px;
-    width: 14px;
-    height: 14px;
-    background: white;
-    border-radius: 50%;
+.santa-image {
+    width: 150px;
+    height: auto;
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.5));
 }
 
 /* Gift drop animation */
@@ -295,7 +138,7 @@
 }
 
 /* Santa flying animation - wobble effect */
-.santa.flying .santa-sleigh {
+.santa.flying .santa-image {
     animation: fly-wobble 0.4s ease-in-out infinite;
 }
 
@@ -309,7 +152,7 @@
 }
 
 /* Santa idle animation when not flying */
-.santa.idle .santa-sleigh {
+.santa.idle .santa-image {
     animation: idle-hover 3s ease-in-out infinite;
 }
 
@@ -407,51 +250,15 @@
         height: 350px;
     }
 
-    .santa {
-        width: 120px;
-        height: 70px;
+    .santa-image {
+        width: 100px;
     }
 
-    .santa-face {
-        width: 35px;
-        height: 35px;
-        bottom: 50px;
-        left: 45px;
+    .gift-drop {
+        left: 50px;
     }
 
-    .santa-body {
-        width: 40px;
-        height: 35px;
-        bottom: 25px;
-        left: 42px;
-    }
-
-    .sleigh {
-        width: 70px;
-        height: 22px;
-        left: 30px;
-        bottom: 8px;
-    }
-
-    .reindeer {
-        font-size: 25px;
-        left: -5px;
-        top: 25px;
-    }
-
-    .santa-hat {
-        bottom: 85px;  /* Raised for mobile too */
-        left: 42px;
-        border-left: 8px solid transparent;
-        border-right: 15px solid transparent;
-        border-bottom: 22px solid var(--christmas-red);
-    }
-
-    .santa-face-placeholder {
-        width: 35px;
-        height: 35px;
-        bottom: 50px;
-        left: 45px;
-        font-size: 22px;
+    .dropping-gift {
+        font-size: 20px;
     }
 }
