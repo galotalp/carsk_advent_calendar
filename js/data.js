@@ -11,8 +11,44 @@
 const CALENDAR_CONFIG = {
     startDate: new Date(2025, 11, 9),  // December 9, 2025
     endDate: new Date(2025, 11, 24),   // December 24, 2025
+    grandPrizeDate: new Date(2025, 11, 25),  // December 25, 2025
     totalDays: 12,  // 12 working days (excluding weekends)
-    prizePerCenter: "$50 Gift Card"
+    prizePerCenter: "$50 Gift Card",
+    recruitmentTrackingStartDate: "December 8th"
+};
+
+// Recruitment tracking since December 8th
+// UPDATE THESE NUMBERS DAILY - each center's recruitment count
+const RECRUITMENT_COUNTS = {
+    1: 0,   // Royal University Hospital
+    2: 0,   // Kingston General Hospital
+    3: 0,   // University Health Network
+    4: 0,   // St. George's Hospital Trust
+    5: 0,   // Guy's and St. Thomas
+    6: 0,   // London Health Sciences
+    7: 0,   // University of Montreal CIUSSS
+    8: 0,   // Queen Elizabeth II (Halifax)
+    9: 0,   // Laval University
+    10: 0,  // George Washington University
+    11: 0,  // Kings College Hospital
+    12: 0,  // Imperial College
+    13: 0,  // Brighton & Sussex NHS Trust
+    14: 0,  // St. Helier's
+    15: 0,  // St. Michael's Hospital
+    16: 0,  // Baylor Scott & White
+    17: 0,  // Hospital Del Mar, Barcelona
+    18: 0,  // Charite, Berlin
+    19: 0,  // University of Alberta
+    20: 0,  // University of Montreal CHUM
+    21: 0,  // McGill University
+    22: 0,  // VCU University
+    23: 0,  // Royal Free Hospital
+    24: 0,  // University of Pennsylvania
+    25: 0,  // University of Minnesota
+    26: 0,  // The Ottawa Hospital
+    27: 0,  // St. Joseph's Hospital (Hamilton)
+    28: 0,  // Barts Health NHS Trust
+    29: 0   // University of Arizona
 };
 
 // Working days for the calendar (December 2025, excluding weekends)
@@ -532,13 +568,20 @@ const DAY_ASSIGNMENTS = assignCentersToDays(TRANSPLANT_CENTERS, CALENDAR_DAYS);
 // Gift box colors
 const GIFT_COLORS = ['red', 'green', 'blue', 'purple', 'gold', 'pink'];
 
+// Helper to get recruitment count for a center
+function getRecruitmentCount(centerId) {
+    return RECRUITMENT_COUNTS[centerId] || 0;
+}
+
 // Export for use in other modules
 window.CARSK_DATA = {
     config: CALENDAR_CONFIG,
     calendarDays: CALENDAR_DAYS,
     centers: TRANSPLANT_CENTERS,
     dayAssignments: DAY_ASSIGNMENTS,
-    giftColors: GIFT_COLORS
+    giftColors: GIFT_COLORS,
+    recruitmentCounts: RECRUITMENT_COUNTS,
+    getRecruitmentCount: getRecruitmentCount
 };
 
 // Log assignment summary

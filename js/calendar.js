@@ -209,10 +209,19 @@ class AdventCalendar {
                 ? `${center.city}, ${center.state}, ${center.country}`
                 : `${center.city}, ${center.country}`;
 
+            // Get recruitment count
+            const recruitmentCount = window.CARSK_DATA.getRecruitmentCount(center.id);
+            const trackingStartDate = window.CARSK_DATA.config.recruitmentTrackingStartDate;
+
             return `
                 <div class="center-card">
                     <h3>${center.name}</h3>
                     <p class="center-location">${location}</p>
+
+                    <div class="recruitment-tracker">
+                        <span class="recruitment-count">${recruitmentCount}</span>
+                        <span class="recruitment-label">recruited since ${trackingStartDate}</span>
+                    </div>
 
                     ${pis.length > 0 ? `
                         <div class="team-section">

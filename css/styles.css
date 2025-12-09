@@ -119,6 +119,219 @@ body {
     color: var(--christmas-gold);
 }
 
+/* Info Section */
+.info-section {
+    padding: 1.5rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.info-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.info-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 1.5rem;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+.info-card h3 {
+    font-family: 'Mountains of Christmas', cursive;
+    color: var(--christmas-gold);
+    font-size: 1.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.info-card p {
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+}
+
+.info-card .warning-text {
+    color: #ff6b6b;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.info-card .highlight-text {
+    color: var(--christmas-gold);
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.info-card.grand-prize {
+    border-color: rgba(255, 215, 0, 0.5);
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+}
+
+/* Grand Prize Section */
+.grand-prize-section {
+    padding: 2rem;
+    max-width: 600px;
+    margin: 2rem auto;
+    text-align: center;
+}
+
+.grand-prize-section h2 {
+    font-family: 'Mountains of Christmas', cursive;
+    font-size: 2.5rem;
+    color: var(--christmas-gold);
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.grand-prize-description {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+.grand-prize-gift {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 1rem;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.grand-prize-gift:hover {
+    transform: scale(1.05);
+}
+
+.grand-prize-gift.locked {
+    cursor: not-allowed;
+}
+
+.grand-prize-gift.locked:hover {
+    transform: none;
+}
+
+.grand-gift-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(145deg, #ffd700, #ffaa00);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 40px rgba(255, 215, 0, 0.4),
+                0 0 60px rgba(255, 215, 0, 0.2);
+    animation: grand-glow 2s ease-in-out infinite;
+}
+
+@keyframes grand-glow {
+    0%, 100% {
+        box-shadow: 0 10px 40px rgba(255, 215, 0, 0.4),
+                    0 0 60px rgba(255, 215, 0, 0.2);
+    }
+    50% {
+        box-shadow: 0 10px 50px rgba(255, 215, 0, 0.6),
+                    0 0 80px rgba(255, 215, 0, 0.4);
+    }
+}
+
+.grand-gift-wrapper .gift-ribbon-v {
+    position: absolute;
+    width: 20%;
+    height: 100%;
+    background: var(--christmas-red);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.grand-gift-wrapper .gift-ribbon-h {
+    position: absolute;
+    width: 100%;
+    height: 20%;
+    background: var(--christmas-red);
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.grand-gift-wrapper .gift-bow {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 50px;
+    z-index: 10;
+}
+
+.grand-gift-wrapper .bow-loop {
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    background: var(--christmas-red);
+    border-radius: 50% 50% 50% 0;
+    box-shadow: inset -3px -3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.grand-gift-wrapper .bow-loop.left {
+    left: 5px;
+    transform: rotate(-45deg);
+}
+
+.grand-gift-wrapper .bow-loop.right {
+    right: 5px;
+    transform: rotate(45deg) scaleX(-1);
+}
+
+.grand-gift-wrapper .bow-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    background: var(--christmas-red);
+    border-radius: 50%;
+    box-shadow: inset -2px -2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.grand-gift-wrapper .gift-day {
+    position: relative;
+    z-index: 5;
+    font-family: 'Mountains of Christmas', cursive;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.grand-gift-wrapper .gift-date {
+    position: relative;
+    z-index: 5;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.grand-prize-label {
+    position: relative;
+    z-index: 5;
+    font-family: 'Mountains of Christmas', cursive;
+    font-size: 1.2rem;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    margin-top: 0.3rem;
+}
+
+.grand-prize-note {
+    color: var(--christmas-gold);
+    font-weight: 600;
+    font-size: 1rem;
+}
+
 /* Footer */
 .footer {
     text-align: center;
@@ -130,6 +343,22 @@ body {
 .footer p {
     font-family: 'Mountains of Christmas', cursive;
     font-size: 1.5rem;
+}
+
+/* Responsive for info section */
+@media (max-width: 768px) {
+    .info-container {
+        grid-template-columns: 1fr;
+    }
+
+    .grand-prize-gift {
+        width: 150px;
+        height: 150px;
+    }
+
+    .grand-gift-wrapper .gift-day {
+        font-size: 2.5rem;
+    }
 }
 
 /* Modal Styles */
@@ -293,6 +522,29 @@ body {
 .member-name.nurse {
     background: linear-gradient(135deg, #38a169, #2f855a);
     color: white;
+}
+
+/* Recruitment Tracker */
+.recruitment-tracker {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0.6rem 1rem;
+    background: linear-gradient(135deg, rgba(39, 174, 96, 0.2) 0%, rgba(39, 174, 96, 0.1) 100%);
+    border-radius: 8px;
+    border: 1px solid rgba(39, 174, 96, 0.3);
+}
+
+.recruitment-count {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2ecc71;
+}
+
+.recruitment-label {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .center-card .prize {
