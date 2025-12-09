@@ -152,8 +152,9 @@ class WorldMap {
 
         // Adjust for Santa's size (center the image over the marker)
         // chadban_2.png is 150px wide, so offset by 75px to center
+        // Position Santa so the BOTTOM of the image is at the marker (gift drops there)
         const targetX = targetPos.x - 75;
-        const targetY = targetPos.y - 130;  // Position Santa above the marker so gift drops at marker
+        const targetY = targetPos.y - 180;  // Santa image is ~180px tall, position above marker
 
         this.santa.classList.remove('idle');
         this.santa.classList.add('flying');
@@ -325,8 +326,9 @@ class WorldMap {
 
         const targetPos = this.getCenterPixelPosition(center);
         // Adjust for Santa's size (center the image over the marker)
+        // Position Santa so the BOTTOM of the image is at the marker (gift drops there)
         const targetX = targetPos.x - 75;
-        const targetY = targetPos.y - 130;
+        const targetY = targetPos.y - 180;
 
         this.santa.classList.remove('idle');
         this.santa.classList.add('flying');
