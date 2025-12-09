@@ -1,0 +1,11 @@
+Place the following image in this folder:
+
+chadban.png - A photo of Dr. Steven Chadban (will be used as Santa's face)
+
+The image should be:
+- Square or nearly square aspect ratio (for best results)
+- At least 100x100 pixels
+- PNG or JPG format
+
+The image will be cropped to a circle and placed on the Santa character
+that flies across the world map delivering gifts to transplant centers.

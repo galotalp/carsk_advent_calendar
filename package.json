@@ -1,0 +1,22 @@
+{
+  "name": "carsk-advent-calendar",
+  "version": "1.0.0",
+  "description": "CARSK Clinical Trial Advent Calendar - Celebrating Research Coordinators",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server -p 8080 -o",
+    "dev": "npx http-server -p 8080 -o -c-1"
+  },
+  "keywords": [
+    "advent-calendar",
+    "animation",
+    "carsk",
+    "clinical-trial"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "xlsx": "^0.18.5"
+  }
+}

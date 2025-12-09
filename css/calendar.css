@@ -1,0 +1,300 @@
+/* Calendar Section Styles */
+.calendar-section {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.calendar-section h2 {
+    text-align: center;
+    font-family: 'Mountains of Christmas', cursive;
+    font-size: 2.5rem;
+    color: var(--christmas-gold);
+    margin-bottom: 2rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Advent Calendar Grid */
+.advent-calendar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    padding: 1rem;
+}
+
+/* Gift Box Styles */
+.gift-box {
+    aspect-ratio: 1;
+    position: relative;
+    cursor: pointer;
+    perspective: 1000px;
+    transition: transform 0.3s;
+}
+
+.gift-box:hover {
+    transform: scale(1.05);
+}
+
+.gift-box.locked {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.gift-box.locked:hover {
+    transform: none;
+}
+
+.gift-box-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+/* Gift Box Components */
+.gift-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Different gift colors */
+.gift-box[data-color="red"] .gift-wrapper {
+    background: linear-gradient(145deg, #e74c3c, #c0392b);
+}
+
+.gift-box[data-color="green"] .gift-wrapper {
+    background: linear-gradient(145deg, #27ae60, #1e8449);
+}
+
+.gift-box[data-color="blue"] .gift-wrapper {
+    background: linear-gradient(145deg, #3498db, #2980b9);
+}
+
+.gift-box[data-color="purple"] .gift-wrapper {
+    background: linear-gradient(145deg, #9b59b6, #8e44ad);
+}
+
+.gift-box[data-color="gold"] .gift-wrapper {
+    background: linear-gradient(145deg, #f1c40f, #d4ac0d);
+}
+
+.gift-box[data-color="pink"] .gift-wrapper {
+    background: linear-gradient(145deg, #e91e63, #c2185b);
+}
+
+/* Gift ribbon */
+.gift-ribbon-v {
+    position: absolute;
+    width: 20%;
+    height: 100%;
+    background: var(--christmas-gold);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.gift-ribbon-h {
+    position: absolute;
+    width: 100%;
+    height: 20%;
+    background: var(--christmas-gold);
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Gift bow */
+.gift-bow {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 40px;
+    z-index: 10;
+}
+
+.bow-loop {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: var(--christmas-gold);
+    border-radius: 50% 50% 50% 0;
+    box-shadow: inset -3px -3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.bow-loop.left {
+    left: 5px;
+    transform: rotate(-45deg);
+}
+
+.bow-loop.right {
+    right: 5px;
+    transform: rotate(45deg) scaleX(-1);
+}
+
+.bow-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 15px;
+    height: 15px;
+    background: var(--christmas-gold);
+    border-radius: 50%;
+    box-shadow: inset -2px -2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Day number on gift */
+.gift-day {
+    position: relative;
+    z-index: 5;
+    font-family: 'Mountains of Christmas', cursive;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.gift-date {
+    position: relative;
+    z-index: 5;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-top: 0.3rem;
+}
+
+/* Lock icon for future dates */
+.gift-lock {
+    position: absolute;
+    bottom: 15px;
+    font-size: 1.5rem;
+    opacity: 0.7;
+    z-index: 5;
+}
+
+/* Opened state indicator */
+.gift-box.opened .gift-wrapper {
+    animation: shake 0.5s ease-in-out;
+}
+
+.gift-box.opened::after {
+    content: '✨';
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 1.5rem;
+    animation: sparkle 1s ease-in-out infinite;
+}
+
+@keyframes shake {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-5deg); }
+    75% { transform: rotate(5deg); }
+}
+
+@keyframes sparkle {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.8; }
+}
+
+/* Today's gift highlight */
+.gift-box.today {
+    animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.5),
+                    0 0 40px rgba(255, 215, 0, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.8),
+                    0 0 60px rgba(255, 215, 0, 0.5);
+    }
+}
+
+/* Gift opening animation */
+.gift-box.opening .gift-bow {
+    animation: bow-pop 0.5s ease-out forwards;
+}
+
+@keyframes bow-pop {
+    0% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.3) translateY(-10px); }
+    100% { transform: translateX(-50%) scale(0) translateY(-30px); opacity: 0; }
+}
+
+.gift-box.opening .gift-wrapper {
+    animation: box-open 0.8s ease-out forwards;
+}
+
+@keyframes box-open {
+    0% { transform: scale(1); }
+    30% { transform: scale(1.1); }
+    60% { transform: scale(1.05) rotateX(-10deg); }
+    100% { transform: scale(1); }
+}
+
+/* Particles burst on open */
+.gift-particles {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: particle-burst 1s ease-out forwards;
+}
+
+@keyframes particle-burst {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(1);
+        opacity: 0;
+    }
+}
+
+/* Responsive Grid */
+@media (max-width: 900px) {
+    .advent-calendar {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .advent-calendar {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .gift-day {
+        font-size: 2rem;
+    }
+
+    .calendar-section h2 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .advent-calendar {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+}

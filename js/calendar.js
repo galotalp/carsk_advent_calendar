@@ -1,0 +1,268 @@
+/**
+ * Advent Calendar Component for CARSK
+ * Handles gift box rendering, opening animations, and modal display
+ *
+ * Logic: Each center receives ONE $50 gift card, but ALL team members
+ * (coordinators and PIs) are recognized and celebrated.
+ */
+
+class AdventCalendar {
+    constructor() {
+        this.calendarContainer = document.getElementById('advent-calendar');
+        this.modal = document.getElementById('gift-modal');
+        this.modalClose = document.getElementById('modal-close');
+        this.dayAssignments = window.CARSK_DATA.dayAssignments;
+        this.giftColors = window.CARSK_DATA.giftColors;
+        this.openedGifts = new Set();
+
+        this.init();
+    }
+
+    init() {
+        this.renderGiftBoxes();
+        this.setupModalEvents();
+        this.loadOpenedGifts();
+    }
+
+    getCurrentDate() {
+        return new Date();
+    }
+
+    renderGiftBoxes() {
+        this.calendarContainer.innerHTML = '';
+
+        this.dayAssignments.forEach((day, index) => {
+            const giftBox = this.createGiftBox(day, index);
+            this.calendarContainer.appendChild(giftBox);
+        });
+
+        this.updateGiftStates();
+    }
+
+    createGiftBox(day, index) {
+        const box = document.createElement('div');
+        box.className = 'gift-box';
+        box.dataset.day = day.day;
+        box.dataset.color = this.giftColors[index % this.giftColors.length];
+
+        const dateStr = this.formatDate(day.calendarDay.date);
+        const centerCount = day.centers.length;
+
+        box.innerHTML = `
+            <div class="gift-box-inner">
+                <div class="gift-wrapper">
+                    <div class="gift-ribbon-v"></div>
+                    <div class="gift-ribbon-h"></div>
+                    <div class="gift-bow">
+                        <div class="bow-loop left"></div>
+                        <div class="bow-loop right"></div>
+                        <div class="bow-center"></div>
+                    </div>
+                    <span class="gift-day">${day.day}</span>
+                    <span class="gift-date">${dateStr}</span>
+                    <span class="gift-centers-count">${centerCount} center${centerCount > 1 ? 's' : ''}</span>
+                </div>
+            </div>
+            <div class="gift-particles"></div>
+        `;
+
+        box.addEventListener('click', () => this.handleGiftClick(day, box));
+
+        return box;
+    }
+
+    formatDate(date) {
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        return `${months[date.getMonth()]} ${date.getDate()}`;
+    }
+
+    updateGiftStates() {
+        const currentDate = this.getCurrentDate();
+        currentDate.setHours(0, 0, 0, 0);
+
+        const giftBoxes = this.calendarContainer.querySelectorAll('.gift-box');
+
+        giftBoxes.forEach((box, index) => {
+            const day = this.dayAssignments[index];
+            const giftDate = new Date(day.calendarDay.date);
+            giftDate.setHours(0, 0, 0, 0);
+
+            box.classList.remove('locked', 'today', 'opened', 'available');
+
+            if (currentDate < giftDate) {
+                box.classList.add('locked');
+            } else if (currentDate.getTime() === giftDate.getTime()) {
+                box.classList.add('today', 'available');
+                if (this.openedGifts.has(day.day)) {
+                    box.classList.add('opened');
+                }
+            } else {
+                box.classList.add('available');
+                if (this.openedGifts.has(day.day)) {
+                    box.classList.add('opened');
+                }
+            }
+        });
+
+        if (window.WorldMapInstance) {
+            window.WorldMapInstance.updateMarkersForDate(new Date(currentDate));
+        }
+    }
+
+    handleGiftClick(day, box) {
+        if (box.classList.contains('locked')) {
+            this.showLockedMessage(day);
+            return;
+        }
+
+        box.classList.add('opening');
+        this.createParticles(box);
+
+        // Santa animation is now continuous - no need to trigger it here
+
+        setTimeout(() => {
+            box.classList.remove('opening');
+            box.classList.add('opened');
+            this.openedGifts.add(day.day);
+            this.saveOpenedGifts();
+            this.showGiftModal(day);
+        }, 800);
+    }
+
+    createParticles(box) {
+        const particlesContainer = box.querySelector('.gift-particles');
+        particlesContainer.innerHTML = '';
+
+        const colors = ['#e74c3c', '#27ae60', '#f1c40f', '#3498db', '#9b59b6'];
+
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+            particle.style.setProperty('--tx', `${(Math.random() - 0.5) * 200}px`);
+            particle.style.setProperty('--ty', `${(Math.random() - 0.5) * 200}px`);
+            particle.style.animationDelay = `${Math.random() * 0.3}s`;
+            particlesContainer.appendChild(particle);
+        }
+
+        setTimeout(() => particlesContainer.innerHTML = '', 1500);
+    }
+
+    showLockedMessage(day) {
+        const dateStr = this.formatDate(day.calendarDay.date);
+        const box = this.calendarContainer.querySelector(`[data-day="${day.day}"]`);
+        box.style.animation = 'shake 0.5s ease-in-out';
+        setTimeout(() => box.style.animation = '', 500);
+    }
+
+    showGiftModal(day) {
+        const modalDate = document.getElementById('modal-date');
+        const modalCenters = document.getElementById('modal-centers');
+        const confettiContainer = document.getElementById('confetti');
+
+        const dateStr = day.calendarDay.date.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        modalDate.textContent = `Day ${day.day} - ${dateStr}`;
+
+        // Render center cards - each center gets ONE gift card, all members recognized
+        modalCenters.innerHTML = day.centers.map(center => {
+            // Separate coordinators and PIs
+            const coordinators = center.members.filter(m => m.role === "Research Coordinator");
+            const pis = center.members.filter(m => m.role === "PI");
+
+            return `
+                <div class="center-card">
+                    <h3>${center.name}</h3>
+                    <p class="center-location">${center.city}, ${center.country}</p>
+
+                    ${pis.length > 0 ? `
+                        <div class="team-section">
+                            <p class="section-label">Principal Investigator${pis.length > 1 ? 's' : ''}:</p>
+                            <div class="team-members pis">
+                                ${pis.map(pi => `<span class="member-name pi">${pi.name}</span>`).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    ${coordinators.length > 0 ? `
+                        <div class="team-section">
+                            <p class="section-label">Research Coordinator${coordinators.length > 1 ? 's' : ''}:</p>
+                            <div class="team-members coordinators">
+                                ${coordinators.map(coord => `<span class="member-name coordinator">${coord.name}</span>`).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <div class="prize">
+                        <span class="prize-icon">🎁</span>
+                        <strong>Center Prize:</strong> ${center.prize}
+                        <p class="prize-note">One gift card per center to share among the team!</p>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        this.createConfetti(confettiContainer);
+        this.modal.classList.remove('hidden');
+    }
+
+    createConfetti(container) {
+        container.innerHTML = '';
+        const colors = ['#e74c3c', '#27ae60', '#f1c40f', '#3498db', '#9b59b6', '#e91e63'];
+
+        for (let i = 0; i < 50; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.left = `${Math.random() * 100}%`;
+            confetti.style.animationDelay = `${Math.random() * 2}s`;
+            confetti.style.animationDuration = `${2 + Math.random() * 2}s`;
+            container.appendChild(confetti);
+        }
+
+        setTimeout(() => container.innerHTML = '', 5000);
+    }
+
+    setupModalEvents() {
+        this.modalClose.addEventListener('click', () => this.closeModal());
+        this.modal.addEventListener('click', (e) => {
+            if (e.target === this.modal) this.closeModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !this.modal.classList.contains('hidden')) {
+                this.closeModal();
+            }
+        });
+    }
+
+    closeModal() {
+        this.modal.classList.add('hidden');
+    }
+
+    saveOpenedGifts() {
+        localStorage.setItem('carsk_opened_gifts', JSON.stringify([...this.openedGifts]));
+    }
+
+    loadOpenedGifts() {
+        const saved = localStorage.getItem('carsk_opened_gifts');
+        if (saved) {
+            this.openedGifts = new Set(JSON.parse(saved));
+        }
+    }
+
+    resetOpenedGifts() {
+        this.openedGifts.clear();
+        localStorage.removeItem('carsk_opened_gifts');
+        this.updateGiftStates();
+    }
+}
+
+window.AdventCalendarInstance = null;
+document.addEventListener('DOMContentLoaded', () => {
+    window.AdventCalendarInstance = new AdventCalendar();
+});

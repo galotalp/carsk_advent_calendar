@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CARSK Advent Calendar 2025</title>
+
+    <!-- Leaflet CSS for accurate world map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/map.css">
+    <link rel="stylesheet" href="css/calendar.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Snowfall effect -->
+    <div id="snowfall"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <h1>CARSK Advent Calendar 2025</h1>
+        <p class="subtitle">Celebrating Our Amazing Research Coordinators</p>
+    </header>
+
+    <!-- World Map Section with Santa Animation -->
+    <section id="map-section" class="map-section">
+        <div class="map-container">
+            <!-- Leaflet map container -->
+            <div id="leaflet-map"></div>
+
+            <!-- Santa overlay (positioned above map) -->
+            <div id="santa-overlay" class="santa-overlay">
+                <div id="santa" class="santa">
+                    <div class="santa-sleigh">
+                        <div class="reindeer"></div>
+                        <div class="sleigh"></div>
+                        <div class="santa-body"></div>
+                        <img id="santa-face" src="assets/images/steve_chadban.png" alt="Dr. Steven Chadban" class="santa-face" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="santa-face-placeholder" style="display:none;">🎅</div>
+                        <div class="santa-hat"></div>
+                    </div>
+                    <div class="gift-drop" id="gift-drop"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="map-legend">
+            <h3>Transplant Centers Worldwide</h3>
+            <p>Watch Dr. Chadban deliver gifts to 29 centers across the globe!</p>
+            <div class="legend-items">
+                <span class="legend-item"><span class="legend-dot pending"></span> Awaiting Gift</span>
+                <span class="legend-item"><span class="legend-dot visited"></span> Gift Delivered</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advent Calendar Section -->
+    <section id="calendar-section" class="calendar-section">
+        <h2>Open Your Daily Gift</h2>
+        <div id="advent-calendar" class="advent-calendar">
+            <!-- 12 gift boxes will be generated here -->
+        </div>
+    </section>
+
+    <!-- Modal for opened gifts -->
+    <div id="gift-modal" class="modal hidden">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <div class="modal-gift-animation">
+                <div class="confetti-container" id="confetti"></div>
+                <div class="gift-reveal" id="gift-reveal">
+                    <h2 id="modal-date"></h2>
+                    <div id="modal-centers"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Happy Holidays from the CARSK Trial Team!</p>
+    </footer>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/calendar.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

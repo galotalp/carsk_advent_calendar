@@ -1,0 +1,289 @@
+/* Additional Animation Styles */
+
+/* Flying Santa Path Animation */
+.santa-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* Santa enters from left */
+@keyframes santa-enter {
+    0% {
+        left: -150px;
+        top: 20%;
+    }
+    100% {
+        left: 50%;
+        top: 30%;
+    }
+}
+
+/* Santa exits to right */
+@keyframes santa-exit {
+    0% {
+        right: auto;
+    }
+    100% {
+        left: calc(100% + 150px);
+    }
+}
+
+/* Gift box hover effects */
+.gift-box:not(.locked):hover .gift-bow {
+    animation: bow-wiggle 0.5s ease-in-out;
+}
+
+@keyframes bow-wiggle {
+    0%, 100% { transform: translateX(-50%) rotate(0deg); }
+    25% { transform: translateX(-50%) rotate(-10deg); }
+    75% { transform: translateX(-50%) rotate(10deg); }
+}
+
+/* Stars twinkling effect */
+.star {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--duration, 2s) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+}
+
+/* Modal entrance animation */
+.modal-content {
+    animation: modal-pop 0.4s ease-out;
+}
+
+@keyframes modal-pop {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    70% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Center card reveal animation */
+.center-card {
+    animation: card-slide-in 0.5s ease-out;
+    animation-fill-mode: both;
+}
+
+.center-card:nth-child(1) { animation-delay: 0.2s; }
+.center-card:nth-child(2) { animation-delay: 0.4s; }
+.center-card:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes card-slide-in {
+    0% {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Name pop animation */
+.coordinator-name {
+    animation: name-pop 0.3s ease-out;
+    animation-fill-mode: both;
+}
+
+@keyframes name-pop {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    70% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Prize reveal */
+.prize {
+    animation: prize-glow 2s ease-in-out infinite;
+}
+
+@keyframes prize-glow {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    }
+}
+
+/* Gift icon bounce in prize */
+.prize-icon {
+    display: inline-block;
+    animation: icon-bounce 1s ease-in-out infinite;
+}
+
+@keyframes icon-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+/* Map marker arrival animation */
+.center-marker.receiving-gift {
+    animation: marker-pulse 0.5s ease-out;
+}
+
+@keyframes marker-pulse {
+    0% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(2); }
+    100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* Christmas lights border effect */
+.lights-border {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.light-bulb {
+    position: absolute;
+    width: 10px;
+    height: 15px;
+    border-radius: 50% 50% 50% 50%;
+    animation: light-glow 1s ease-in-out infinite;
+}
+
+.light-bulb.red { background: #e74c3c; animation-delay: 0s; }
+.light-bulb.green { background: #27ae60; animation-delay: 0.2s; }
+.light-bulb.blue { background: #3498db; animation-delay: 0.4s; }
+.light-bulb.yellow { background: #f1c40f; animation-delay: 0.6s; }
+
+@keyframes light-glow {
+    0%, 100% {
+        opacity: 0.4;
+        box-shadow: 0 0 5px currentColor;
+    }
+    50% {
+        opacity: 1;
+        box-shadow: 0 0 15px currentColor, 0 0 30px currentColor;
+    }
+}
+
+/* Loading spinner */
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-top-color: var(--christmas-gold);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Sleigh trail effect */
+.sleigh-trail {
+    position: absolute;
+    pointer-events: none;
+}
+
+.trail-particle {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: var(--christmas-gold);
+    border-radius: 50%;
+    animation: trail-fade 1s ease-out forwards;
+}
+
+@keyframes trail-fade {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0);
+    }
+}
+
+/* Festive text shimmer */
+.shimmer-text {
+    background: linear-gradient(
+        90deg,
+        var(--christmas-gold) 0%,
+        #fff 50%,
+        var(--christmas-gold) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+    to { background-position: 200% center; }
+}
+
+/* Bounce in animation for elements */
+.bounce-in {
+    animation: bounce-in 0.6s ease-out;
+}
+
+@keyframes bounce-in {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    70% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Fade in up animation */
+.fade-in-up {
+    animation: fade-in-up 0.5s ease-out;
+}
+
+@keyframes fade-in-up {
+    0% {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
