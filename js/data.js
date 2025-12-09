@@ -17,38 +17,38 @@ const CALENDAR_CONFIG = {
     recruitmentTrackingStartDate: "December 8th"
 };
 
-// Recruitment tracking since December 8th
-// UPDATE THESE NUMBERS DAILY - each center's recruitment count
+// Total Randomised counts from spreadsheet (12Days_of_CARSK_BRG.xlsx)
+// These are the total patients recruited so far at each center
 const RECRUITMENT_COUNTS = {
-    1: 0,   // Royal University Hospital
-    2: 0,   // Kingston General Hospital
-    3: 0,   // University Health Network
-    4: 0,   // St. George's Hospital Trust
-    5: 0,   // Guy's and St. Thomas
-    6: 0,   // London Health Sciences
-    7: 0,   // University of Montreal CIUSSS
-    8: 0,   // Queen Elizabeth II (Halifax)
-    9: 0,   // Laval University
-    10: 0,  // George Washington University
-    11: 0,  // Kings College Hospital
-    12: 0,  // Imperial College
-    13: 0,  // Brighton & Sussex NHS Trust
-    14: 0,  // St. Helier's
-    15: 0,  // St. Michael's Hospital
-    16: 0,  // Baylor Scott & White
-    17: 0,  // Hospital Del Mar, Barcelona
-    18: 0,  // Charite, Berlin
-    19: 0,  // University of Alberta
-    20: 0,  // University of Montreal CHUM
-    21: 0,  // McGill University
-    22: 0,  // VCU University
-    23: 0,  // Royal Free Hospital
-    24: 0,  // University of Pennsylvania
-    25: 0,  // University of Minnesota
-    26: 0,  // The Ottawa Hospital
-    27: 0,  // St. Joseph's Hospital (Hamilton)
-    28: 0,  // Barts Health NHS Trust
-    29: 0   // University of Arizona
+    1: 82,   // Royal University Hospital
+    2: 40,   // Kingston General Hospital
+    3: 75,   // University Health Network
+    4: 90,   // St. George's Hospital Trust
+    5: 15,   // Guy's and St. Thomas
+    6: 74,   // London Health Sciences
+    7: 72,   // University of Montreal CIUSSS (Maisonneuve-Rosemont)
+    8: 71,   // Queen Elizabeth II (Halifax)
+    9: 21,   // Laval University
+    10: 37,  // George Washington University
+    11: 31,  // Kings College Hospital
+    12: 30,  // Imperial College
+    13: 17,  // Brighton & Sussex NHS Trust
+    14: 40,  // St. Helier's
+    15: 85,  // St. Michael's Hospital
+    16: 31,  // Baylor Scott & White
+    17: 32,  // Hospital Del Mar, Barcelona
+    18: 102, // Charite, Berlin
+    19: 42,  // University of Alberta
+    20: 33,  // University of Montreal CHUM
+    21: 72,  // McGill University
+    22: 37,  // VCU University
+    23: 65,  // Royal Free Hospital
+    24: 18,  // University of Pennsylvania
+    25: 11,  // University of Minnesota
+    26: 85,  // The Ottawa Hospital
+    27: 48,  // St. Joseph's Hospital (Hamilton)
+    28: 27,  // Barts Health NHS Trust
+    29: 200  // University of Arizona
 };
 
 // Working days for the calendar (December 2025, excluding weekends)

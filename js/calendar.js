@@ -209,9 +209,8 @@ class AdventCalendar {
                 ? `${center.city}, ${center.state}, ${center.country}`
                 : `${center.city}, ${center.country}`;
 
-            // Get recruitment count
+            // Get recruitment count (Total Randomised from spreadsheet)
             const recruitmentCount = window.CARSK_DATA.getRecruitmentCount(center.id);
-            const trackingStartDate = window.CARSK_DATA.config.recruitmentTrackingStartDate;
 
             return `
                 <div class="center-card">
@@ -220,7 +219,7 @@ class AdventCalendar {
 
                     <div class="recruitment-tracker">
                         <span class="recruitment-count">${recruitmentCount}</span>
-                        <span class="recruitment-label">recruited since ${trackingStartDate}</span>
+                        <span class="recruitment-label">recruited so far</span>
                     </div>
 
                     ${pis.length > 0 ? `

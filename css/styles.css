@@ -569,15 +569,6 @@ body {
     margin-top: 0.3rem;
 }
 
-/* Gift box center count */
-.gift-centers-count {
-    position: relative;
-    z-index: 5;
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.8);
-    margin-top: 0.2rem;
-}
-
 /* Confetti */
 .confetti-container {
     position: absolute;
