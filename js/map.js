@@ -191,7 +191,7 @@ class WorldMap {
                     // Arrived at center
                     this.santa.classList.remove('flying');
                     this.santa.classList.add('idle');
-                    this.dropGift();
+                    this.dropGift(centerId);
                     this.markCenterVisited(centerId);
                     resolve();
                 }
@@ -201,12 +201,24 @@ class WorldMap {
         });
     }
 
-    dropGift() {
-        const giftDrop = document.getElementById('gift-drop');
+    dropGift(centerId) {
+        // Get the center's exact pixel position on the map
+        const center = this.centers.find(c => c.id === centerId);
+        if (!center) return;
+
+        const targetPos = this.getCenterPixelPosition(center);
+
+        // Create gift element and position it at the center's location
         const gift = document.createElement('span');
         gift.className = 'dropping-gift';
         gift.textContent = '🎁';
-        giftDrop.appendChild(gift);
+        gift.style.position = 'absolute';
+        gift.style.left = `${targetPos.x}px`;
+        gift.style.top = `${targetPos.y - 50}px`;  // Start slightly above the marker
+        gift.style.transform = 'translateX(-50%)';  // Center the gift horizontally
+
+        // Add to the santa overlay so it's above the map
+        this.santaOverlay.appendChild(gift);
 
         setTimeout(() => gift.remove(), 1500);
     }
@@ -371,7 +383,7 @@ class WorldMap {
                 } else {
                     this.santa.classList.remove('flying');
                     this.santa.classList.add('idle');
-                    this.dropGift();
+                    this.dropGift(centerId);
                     resolve();
                 }
             };
