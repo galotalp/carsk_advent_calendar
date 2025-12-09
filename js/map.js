@@ -35,10 +35,17 @@ class WorldMap {
     }
 
     initLeafletMap() {
+        // Fixed center point between North America and Europe
+        // This ensures consistent view regardless of window size
+        const fixedCenter = [42, -30];  // Atlantic Ocean, showing NA and Europe
+        const fixedZoom = 2.5;  // Zoom level that shows all centers nicely
+
         // Create map with ALL interactions disabled for stable Santa animation
         this.map = L.map('leaflet-map', {
-            center: [35, -20],  // Centered between North America and Europe
-            zoom: this.fixedZoom,
+            center: fixedCenter,
+            zoom: fixedZoom,
+            minZoom: fixedZoom,  // Lock zoom level
+            maxZoom: fixedZoom,  // Lock zoom level
             zoomControl: false,        // Hide zoom controls
             dragging: false,           // Disable dragging
             touchZoom: false,          // Disable touch zoom
@@ -56,26 +63,8 @@ class WorldMap {
             maxZoom: 19
         }).addTo(this.map);
 
-        // Fit to show all centers, then lock the view
-        this.fitMapToCenters();
-    }
-
-    fitMapToCenters() {
-        if (this.centers.length === 0) return;
-
-        const bounds = L.latLngBounds(
-            this.centers.map(c => [c.coordinates.lat, c.coordinates.lng])
-        );
-
-        // Fit bounds once, then the view stays fixed
-        this.map.fitBounds(bounds, {
-            padding: [60, 60],
-            maxZoom: 3,
-            animate: false
-        });
-
         // Store the fixed zoom for reference
-        this.fixedZoom = this.map.getZoom();
+        this.fixedZoom = fixedZoom;
     }
 
     addCenterMarkers() {
