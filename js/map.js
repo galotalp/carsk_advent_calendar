@@ -132,8 +132,11 @@ class WorldMap {
 
     positionSantaAtStart() {
         // Position Santa in the upper left area of the map overlay
-        this.santa.style.left = '30px';
-        this.santa.style.top = '30px';
+        this.santaX = 100;
+        this.santaY = 80;
+        this.santa.style.left = `${this.santaX}px`;
+        this.santa.style.top = `${this.santaY}px`;
+        this.santa.style.transform = 'translate(-50%, -100%)';
     }
 
     // Get pixel position of a center on the map (stable since map doesn't move)
@@ -148,23 +151,23 @@ class WorldMap {
         const center = this.centers.find(c => c.id === centerId);
         if (!center) return;
 
+        // Get the EXACT pixel position of the center marker
         const targetPos = this.getCenterPixelPosition(center);
 
-        // Position Santa ABOVE the marker so the gift drop is visible
-        // Santa image is 150px wide, center it horizontally over the marker
-        // Position Santa well above the marker so he doesn't block the gift
-        const targetX = targetPos.x - 75;  // Center horizontally (150px / 2)
-        const targetY = targetPos.y - 200; // Position above marker (Santa + gap for gift visibility)
+        // Santa will be positioned so his bottom-center is directly above the marker
+        // We set left/top to the marker position, then use CSS transform to offset
+        const targetX = targetPos.x;
+        const targetY = targetPos.y;
 
         this.santa.classList.remove('idle');
         this.santa.classList.add('flying');
 
-        const startX = parseFloat(this.santa.style.left) || 30;
-        const startY = parseFloat(this.santa.style.top) || 30;
+        const startX = this.santaX || 100;
+        const startY = this.santaY || 50;
 
         // Determine if Santa should face left or right
         const facingLeft = targetX < startX;
-        this.santa.style.transform = facingLeft ? 'scaleX(-1)' : 'scaleX(1)';
+        const scaleX = facingLeft ? -1 : 1;
 
         return new Promise(resolve => {
             const startTime = performance.now();
@@ -182,15 +185,26 @@ class WorldMap {
                 // Add a slight arc to the flight path
                 const arcHeight = Math.sin(progress * Math.PI) * -50;
 
+                // Position Santa: left/top at marker, transform moves him up and centers him
                 this.santa.style.left = `${currentX}px`;
                 this.santa.style.top = `${currentY + arcHeight}px`;
+                this.santa.style.transform = `translate(-50%, -100%) scaleX(${scaleX})`;
+
+                // Store current position for next animation
+                this.santaX = currentX;
+                this.santaY = currentY + arcHeight;
 
                 if (progress < 1) {
                     requestAnimationFrame(animate);
                 } else {
-                    // Arrived at center
+                    // Arrived at center - final position exactly above marker
                     this.santa.classList.remove('flying');
                     this.santa.classList.add('idle');
+                    this.santa.style.left = `${targetX}px`;
+                    this.santa.style.top = `${targetY}px`;
+                    this.santa.style.transform = `translate(-50%, -100%) scaleX(${scaleX})`;
+                    this.santaX = targetX;
+                    this.santaY = targetY;
                     this.dropGift(centerId);
                     this.markCenterVisited(centerId);
                     resolve();
@@ -208,14 +222,13 @@ class WorldMap {
 
         const targetPos = this.getCenterPixelPosition(center);
 
-        // Create gift element - start from Santa's position (above) and drop to marker
+        // Create gift element - start from Santa's bottom (directly above marker) and drop to marker
         const gift = document.createElement('span');
         gift.className = 'dropping-gift';
         gift.textContent = '🎁';
         gift.style.position = 'absolute';
         gift.style.left = `${targetPos.x}px`;
-        gift.style.top = `${targetPos.y - 150}px`;  // Start from near Santa (above marker)
-        gift.style.transform = 'translateX(-50%)';
+        gift.style.top = `${targetPos.y}px`;  // Start at marker position (animation will handle the rest)
         gift.style.zIndex = '999';  // Below Santa but above map
 
         // Add to the santa overlay so it's above the map
@@ -337,20 +350,20 @@ class WorldMap {
         const center = this.centers.find(c => c.id === centerId);
         if (!center) return;
 
+        // Get the EXACT pixel position of the center marker
         const targetPos = this.getCenterPixelPosition(center);
-        // Position Santa ABOVE the marker so the gift drop is visible
-        const targetX = targetPos.x - 75;  // Center horizontally (150px / 2)
-        const targetY = targetPos.y - 200; // Position above marker (Santa + gap for gift visibility)
+        const targetX = targetPos.x;
+        const targetY = targetPos.y;
 
         this.santa.classList.remove('idle');
         this.santa.classList.add('flying');
 
-        const startX = parseFloat(this.santa.style.left) || 30;
-        const startY = parseFloat(this.santa.style.top) || 30;
+        const startX = this.santaX || 100;
+        const startY = this.santaY || 50;
 
         // Determine direction
         const facingLeft = targetX < startX;
-        this.santa.style.transform = facingLeft ? 'scaleX(-1)' : 'scaleX(1)';
+        const scaleX = facingLeft ? -1 : 1;
 
         return new Promise(resolve => {
             const startTime = performance.now();
@@ -375,14 +388,26 @@ class WorldMap {
                 // Gentle arc
                 const arcHeight = Math.sin(progress * Math.PI) * -40;
 
+                // Position Santa: left/top at marker, transform moves him up and centers him
                 this.santa.style.left = `${currentX}px`;
                 this.santa.style.top = `${currentY + arcHeight}px`;
+                this.santa.style.transform = `translate(-50%, -100%) scaleX(${scaleX})`;
+
+                // Store current position for next animation
+                this.santaX = currentX;
+                this.santaY = currentY + arcHeight;
 
                 if (progress < 1) {
                     requestAnimationFrame(animate);
                 } else {
+                    // Arrived at center - final position exactly above marker
                     this.santa.classList.remove('flying');
                     this.santa.classList.add('idle');
+                    this.santa.style.left = `${targetX}px`;
+                    this.santa.style.top = `${targetY}px`;
+                    this.santa.style.transform = `translate(-50%, -100%) scaleX(${scaleX})`;
+                    this.santaX = targetX;
+                    this.santaY = targetY;
                     this.dropGift(centerId);
                     resolve();
                 }
