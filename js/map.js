@@ -35,10 +35,13 @@ class WorldMap {
     }
 
     initLeafletMap() {
-        // Fixed center point between North America and Europe
-        // This ensures consistent view regardless of window size
-        const fixedCenter = [42, -30];  // Atlantic Ocean, showing NA and Europe
-        const fixedZoom = 2.5;  // Zoom level that shows all centers nicely
+        // Check if user is on mobile device
+        const isMobile = window.innerWidth <= 768;
+
+        // Different settings for mobile vs desktop
+        // Mobile needs to be more zoomed out to show all centers
+        const fixedCenter = isMobile ? [40, -20] : [42, -30];
+        const fixedZoom = isMobile ? 1.5 : 2.5;
 
         // Create map with ALL interactions disabled for stable Santa animation
         this.map = L.map('leaflet-map', {
@@ -65,6 +68,7 @@ class WorldMap {
 
         // Store the fixed zoom for reference
         this.fixedZoom = fixedZoom;
+        this.isMobile = isMobile;
     }
 
     addCenterMarkers() {
