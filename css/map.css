@@ -117,7 +117,8 @@
 .gift-drop {
     position: absolute;
     bottom: 0;
-    left: 80px;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 4;
 }
 
@@ -252,10 +253,6 @@
 
     .santa-image {
         width: 100px;
-    }
-
-    .gift-drop {
-        left: 50px;
     }
 
     .dropping-gift {

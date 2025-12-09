@@ -15,6 +15,10 @@ class AdventCalendar {
         this.giftColors = window.CARSK_DATA.giftColors;
         this.openedGifts = new Set();
 
+        // Date override for testing (set to null for production)
+        // Example: new Date(2025, 11, 15) for December 15, 2025
+        this.dateOverride = null;
+
         this.init();
     }
 
@@ -25,7 +29,21 @@ class AdventCalendar {
     }
 
     getCurrentDate() {
-        return new Date();
+        return this.dateOverride || new Date();
+    }
+
+    // Set a date override for testing
+    setDateOverride(date) {
+        this.dateOverride = date;
+        this.updateGiftStates();
+        console.log(`📅 Date override set to: ${date ? date.toDateString() : 'none (using current date)'}`);
+    }
+
+    // Clear date override
+    clearDateOverride() {
+        this.dateOverride = null;
+        this.updateGiftStates();
+        console.log('📅 Date override cleared, using current date');
     }
 
     renderGiftBoxes() {
@@ -169,22 +187,56 @@ class AdventCalendar {
         });
         modalDate.textContent = `Day ${day.day} - ${dateStr}`;
 
+        // Build the superlative header if available
+        const superlativeHeader = day.superlative ? `
+            <div class="superlative-section">
+                <h3 class="superlative-title">${day.superlative}</h3>
+                <p class="superlative-description">${day.superlativeDescription}</p>
+            </div>
+        ` : '';
+
         // Render center cards - each center gets ONE gift card, all members recognized
-        modalCenters.innerHTML = day.centers.map(center => {
-            // Separate coordinators and PIs
-            const coordinators = center.members.filter(m => m.role === "Research Coordinator");
+        const centerCards = day.centers.map(center => {
+            // Group members by role
             const pis = center.members.filter(m => m.role === "PI");
+            const coIs = center.members.filter(m => m.role === "Co-I");
+            const coordinators = center.members.filter(m => m.role === "Research Coordinator");
+            const managers = center.members.filter(m => m.role === "Research Manager");
+            const nurses = center.members.filter(m => m.role === "Research Nurse");
+
+            // Format location
+            const location = center.state
+                ? `${center.city}, ${center.state}, ${center.country}`
+                : `${center.city}, ${center.country}`;
 
             return `
                 <div class="center-card">
                     <h3>${center.name}</h3>
-                    <p class="center-location">${center.city}, ${center.country}</p>
+                    <p class="center-location">${location}</p>
 
                     ${pis.length > 0 ? `
                         <div class="team-section">
                             <p class="section-label">Principal Investigator${pis.length > 1 ? 's' : ''}:</p>
                             <div class="team-members pis">
                                 ${pis.map(pi => `<span class="member-name pi">${pi.name}</span>`).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    ${coIs.length > 0 ? `
+                        <div class="team-section">
+                            <p class="section-label">Co-Investigator${coIs.length > 1 ? 's' : ''}:</p>
+                            <div class="team-members coIs">
+                                ${coIs.map(coI => `<span class="member-name coI">${coI.name}</span>`).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    ${managers.length > 0 ? `
+                        <div class="team-section">
+                            <p class="section-label">Research Manager${managers.length > 1 ? 's' : ''}:</p>
+                            <div class="team-members managers">
+                                ${managers.map(mgr => `<span class="member-name manager">${mgr.name}</span>`).join('')}
                             </div>
                         </div>
                     ` : ''}
@@ -198,6 +250,15 @@ class AdventCalendar {
                         </div>
                     ` : ''}
 
+                    ${nurses.length > 0 ? `
+                        <div class="team-section">
+                            <p class="section-label">Research Nurse${nurses.length > 1 ? 's' : ''}:</p>
+                            <div class="team-members nurses">
+                                ${nurses.map(nurse => `<span class="member-name nurse">${nurse.name}</span>`).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+
                     <div class="prize">
                         <span class="prize-icon">🎁</span>
                         <strong>Center Prize:</strong> ${center.prize}
@@ -206,6 +267,8 @@ class AdventCalendar {
                 </div>
             `;
         }).join('');
+
+        modalCenters.innerHTML = superlativeHeader + centerCards;
 
         this.createConfetti(confettiContainer);
         this.modal.classList.remove('hidden');
