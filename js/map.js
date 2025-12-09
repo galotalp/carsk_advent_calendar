@@ -150,11 +150,11 @@ class WorldMap {
 
         const targetPos = this.getCenterPixelPosition(center);
 
-        // Adjust for Santa's size (center the image over the marker)
-        // chadban_2.png is 150px wide, so offset by 75px to center
-        // Position Santa so the BOTTOM of the image is at the marker (gift drops there)
-        const targetX = targetPos.x - 75;
-        const targetY = targetPos.y - 180;  // Santa image is ~180px tall, position above marker
+        // Position Santa ABOVE the marker so the gift drop is visible
+        // Santa image is 150px wide, center it horizontally over the marker
+        // Position Santa well above the marker so he doesn't block the gift
+        const targetX = targetPos.x - 75;  // Center horizontally (150px / 2)
+        const targetY = targetPos.y - 200; // Position above marker (Santa + gap for gift visibility)
 
         this.santa.classList.remove('idle');
         this.santa.classList.add('flying');
@@ -208,14 +208,15 @@ class WorldMap {
 
         const targetPos = this.getCenterPixelPosition(center);
 
-        // Create gift element and position it at the center's location
+        // Create gift element - start from Santa's position (above) and drop to marker
         const gift = document.createElement('span');
         gift.className = 'dropping-gift';
         gift.textContent = '🎁';
         gift.style.position = 'absolute';
         gift.style.left = `${targetPos.x}px`;
-        gift.style.top = `${targetPos.y - 50}px`;  // Start slightly above the marker
-        gift.style.transform = 'translateX(-50%)';  // Center the gift horizontally
+        gift.style.top = `${targetPos.y - 150}px`;  // Start from near Santa (above marker)
+        gift.style.transform = 'translateX(-50%)';
+        gift.style.zIndex = '999';  // Below Santa but above map
 
         // Add to the santa overlay so it's above the map
         this.santaOverlay.appendChild(gift);
@@ -337,10 +338,9 @@ class WorldMap {
         if (!center) return;
 
         const targetPos = this.getCenterPixelPosition(center);
-        // Adjust for Santa's size (center the image over the marker)
-        // Position Santa so the BOTTOM of the image is at the marker (gift drops there)
-        const targetX = targetPos.x - 75;
-        const targetY = targetPos.y - 180;
+        // Position Santa ABOVE the marker so the gift drop is visible
+        const targetX = targetPos.x - 75;  // Center horizontally (150px / 2)
+        const targetY = targetPos.y - 200; // Position above marker (Santa + gap for gift visibility)
 
         this.santa.classList.remove('idle');
         this.santa.classList.add('flying');
