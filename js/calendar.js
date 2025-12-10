@@ -270,7 +270,7 @@ class AdventCalendar {
                     <div class="prize">
                         <span class="prize-icon">🎁</span>
                         <strong>Center Prize:</strong> ${center.prize}
-                        <p class="prize-note">One gift card per center to share among the team!</p>
+                        <p class="prize-note">One gift card per center will be emailed to each site to be shared among the team!</p>
                     </div>
                 </div>
             `;
