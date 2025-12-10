@@ -28,10 +28,22 @@ class WorldMap {
         this.addCenterMarkers();
         this.initSanta();
 
+        // Update markers for current date after a delay to ensure DOM is ready
+        setTimeout(() => {
+            this.updateMarkersForCurrentDate();
+        }, 500);
+
         // Start continuous Santa animation after a short delay
         setTimeout(() => {
             this.startContinuousAnimation();
         }, 1500);
+    }
+
+    // Update markers based on current real date
+    updateMarkersForCurrentDate() {
+        const currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);
+        this.updateMarkersForDate(currentDate);
     }
 
     initLeafletMap() {
@@ -112,15 +124,11 @@ class WorldMap {
 
     markCenterVisited(centerId) {
         this.visitedCenters.add(centerId);
-        const marker = this.markers[centerId];
-        if (marker) {
-            const el = marker.getElement();
-            if (el) {
-                const customMarker = el.querySelector('.custom-marker');
-                if (customMarker) {
-                    customMarker.classList.add('visited');
-                }
-            }
+        // Use data attribute to find the marker directly in the DOM
+        // This is more reliable than marker.getElement() which can return null
+        const customMarker = document.querySelector(`.custom-marker[data-center-id="${centerId}"]`);
+        if (customMarker) {
+            customMarker.classList.add('visited');
         }
     }
 
@@ -437,16 +445,9 @@ class WorldMap {
     updateMarkersForDate(currentDate) {
         const dayAssignments = window.CARSK_DATA.dayAssignments;
 
-        // Reset all markers
-        Object.keys(this.markers).forEach(id => {
-            const marker = this.markers[id];
-            const el = marker.getElement();
-            if (el) {
-                const customMarker = el.querySelector('.custom-marker');
-                if (customMarker) {
-                    customMarker.classList.remove('visited');
-                }
-            }
+        // Reset all markers using DOM query (more reliable)
+        document.querySelectorAll('.custom-marker').forEach(marker => {
+            marker.classList.remove('visited');
         });
 
         this.visitedCenters.clear();
