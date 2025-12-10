@@ -29,6 +29,7 @@
     cursor: pointer;
     perspective: 1000px;
     transition: transform 0.3s;
+    border-radius: 15px;  /* Match gift-wrapper border-radius for glow effect */
 }
 
 .gift-box:hover {
