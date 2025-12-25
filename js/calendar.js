@@ -26,6 +26,19 @@ class AdventCalendar {
         this.renderGiftBoxes();
         this.setupModalEvents();
         this.loadOpenedGifts();
+        this.setupGrandPrize();
+        this.checkUrlDateOverride();
+    }
+
+    checkUrlDateOverride() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const dateParam = urlParams.get('date');
+        if (dateParam) {
+            const [year, month, day] = dateParam.split('-').map(Number);
+            if (year && month && day) {
+                this.setDateOverride(new Date(year, month - 1, day));
+            }
+        }
     }
 
     getCurrentDate() {
@@ -126,6 +139,9 @@ class AdventCalendar {
         if (window.WorldMapInstance) {
             window.WorldMapInstance.updateMarkersForDate(new Date(currentDate));
         }
+
+        // Also update grand prize state
+        this.updateGrandPrizeState();
     }
 
     handleGiftClick(day, box) {
@@ -330,6 +346,91 @@ class AdventCalendar {
         this.openedGifts.clear();
         localStorage.removeItem('carsk_opened_gifts');
         this.updateGiftStates();
+    }
+
+    setupGrandPrize() {
+        this.grandPrizeGift = document.getElementById('grand-prize-gift');
+        if (!this.grandPrizeGift) return;
+
+        this.grandPrizeGift.addEventListener('click', () => this.handleGrandPrizeClick());
+        this.updateGrandPrizeState();
+    }
+
+    updateGrandPrizeState() {
+        if (!this.grandPrizeGift) return;
+
+        const currentDate = this.getCurrentDate();
+        currentDate.setHours(0, 0, 0, 0);
+
+        const christmasDay = new Date(2025, 11, 25); // December 25, 2025
+        christmasDay.setHours(0, 0, 0, 0);
+
+        this.grandPrizeGift.classList.remove('locked', 'today', 'available');
+
+        if (currentDate < christmasDay) {
+            this.grandPrizeGift.classList.add('locked');
+        } else if (currentDate.getTime() === christmasDay.getTime()) {
+            this.grandPrizeGift.classList.add('today', 'available');
+        } else {
+            this.grandPrizeGift.classList.add('available');
+        }
+    }
+
+    handleGrandPrizeClick() {
+        if (this.grandPrizeGift.classList.contains('locked')) {
+            // Shake animation for locked state
+            this.grandPrizeGift.style.animation = 'shake 0.5s ease-in-out';
+            setTimeout(() => this.grandPrizeGift.style.animation = '', 500);
+            return;
+        }
+
+        this.showGrandPrizeModal();
+    }
+
+    showGrandPrizeModal() {
+        const modalDate = document.getElementById('modal-date');
+        const modalCenters = document.getElementById('modal-centers');
+        const confettiContainer = document.getElementById('confetti');
+
+        modalDate.textContent = 'Christmas Day Grand Prize Winners!';
+
+        const grandPrizeContent = `
+            <div class="grand-prize-reveal">
+                <div class="john-gill-photo">
+                    <img src="assets/images/john_gill_christmas.png" alt="John Gill" class="john-gill-image">
+                </div>
+                <div class="grand-prize-message">
+                    <h3>Our winning centers are:</h3>
+                    <div class="winning-centers-list">
+                        <div class="winning-center">
+                            <span class="center-name">Hospital Del Mar Research Institute</span>
+                            <span class="center-location">Barcelona, Spain</span>
+                        </div>
+                        <div class="winning-center">
+                            <span class="center-name">Charité</span>
+                            <span class="center-location">Berlin, Germany</span>
+                        </div>
+                        <div class="winning-center">
+                            <span class="center-name">Royal Free</span>
+                            <span class="center-location">United Kingdom</span>
+                        </div>
+                        <div class="winning-center">
+                            <span class="center-name">Queen Elizabeth II</span>
+                            <span class="center-location">Halifax, Canada</span>
+                        </div>
+                    </div>
+                    <div class="grand-prize-announcement">
+                        <p>We have been overwhelmed with gratitude over everyone's hard work we wanted to appreciate more than just one site!</p>
+                        <p class="prize-amount">We will be sending $250 gift cards to each site.</p>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        modalCenters.innerHTML = grandPrizeContent;
+
+        this.createConfetti(confettiContainer);
+        this.modal.classList.remove('hidden');
     }
 }
 
